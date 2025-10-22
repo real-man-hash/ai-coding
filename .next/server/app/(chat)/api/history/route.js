@@ -1,0 +1,12 @@
+const CHUNK_PUBLIC_PATH = "server/app/(chat)/api/history/route.js";
+const runtime = require("../../../../chunks/[turbopack]_runtime.js");
+runtime.loadChunk("server/chunks/be545_next_f4f879._.js");
+runtime.loadChunk("server/chunks/fb2e7_@auth_core_124fee._.js");
+runtime.loadChunk("server/chunks/27b54_jose_dist_node_esm_817d52._.js");
+runtime.loadChunk("server/chunks/d6e0b_mysql2_622375._.js");
+runtime.loadChunk("server/chunks/3e656_iconv-lite_5ca7af._.js");
+runtime.loadChunk("server/chunks/20b31_aws-ssl-profiles_lib_26e116._.js");
+runtime.loadChunk("server/chunks/24afe_drizzle-orm_b60c32._.js");
+runtime.loadChunk("server/chunks/node_modules__pnpm_3f5511._.js");
+runtime.loadChunk("server/chunks/[root of the server]__dc2bb8._.js");
+module.exports = runtime.getOrInstantiateRuntimeModule("[project]/node_modules/.pnpm/next@15.0.0-canary.152_react-dom@19.0.0-rc-7771d3a7-20240827_react@19.0.0-rc-7771d3a7-20240827/node_modules/next/dist/esm/build/templates/app-route.js { INNER_APP_ROUTE => \"[project]/app/(chat)/api/history/route.ts [app-route] (ecmascript)\" } [app-route] (ecmascript)", CHUNK_PUBLIC_PATH).exports;
