@@ -174,7 +174,7 @@ export async function POST(request: Request) {
         execute: async ({ reservationId }) => {
           const reservation = await getReservationById({ id: reservationId });
 
-          if (reservation.hasCompletedPayment) {
+          if (reservation?.hasCompletedPayment) {
             return { hasCompletedPayment: true };
           } else {
             return { hasCompletedPayment: false };
