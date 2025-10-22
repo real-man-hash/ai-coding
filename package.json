@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev --turbo",
     "build": "next build",
-    "start": "ts-node ./db/migrate.ts && next start",
+    "start": "npx ts-node ./db/migrate.ts && next start",
     "lint": "next lint"
   },
   "dependencies": {
