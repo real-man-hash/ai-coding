@@ -2,15 +2,13 @@
   "node": {
     "44b708f89b2b058d3d1a9451f92ae25ec1a21e8f": {
       "workers": {
-        "app/(chat)/page": "[project]/.next-internal/server/app/(chat)/page/actions.js { ACTIONS_MODULE0 => \"[project]/components/custom/navbar.tsx [app-rsc] (ecmascript)\" } [app-rsc] (ecmascript)",
-        "app/_not-found/page": "[project]/.next-internal/server/app/_not-found/page/actions.js { ACTIONS_MODULE0 => \"[project]/components/custom/navbar.tsx [app-rsc] (ecmascript)\" } [app-rsc] (ecmascript)"
+        "app/(chat)/page": "[project]/.next-internal/server/app/(chat)/page/actions.js { ACTIONS_MODULE0 => \"[project]/components/custom/navbar.tsx [app-rsc] (ecmascript)\" } [app-rsc] (ecmascript)"
       },
       "layer": {
-        "app/(chat)/page": "rsc",
-        "app/_not-found/page": "rsc"
+        "app/(chat)/page": "rsc"
       }
     }
   },
   "edge": {},
-  "encryptionKey": "fAKZA4AptkAG130M0kQo26lDmH88t2WSHUcnmYhlJRI="
+  "encryptionKey": "RcYMtmcMWPZdLaMdC5Y2Wz3gL8yw/nVP5sPd7ItycUU="
 }

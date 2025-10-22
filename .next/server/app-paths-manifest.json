@@ -1,5 +1,5 @@
 {
   "/(chat)/page": "app/(chat)/page.js",
-  "/(chat)/api/history/route": "app/(chat)/api/history/route.js",
-  "/_not-found/page": "app/_not-found/page.js"
+  "/favicon.ico/route": "app/favicon.ico/route.js",
+  "/(chat)/api/history/route": "app/(chat)/api/history/route.js"
 }
