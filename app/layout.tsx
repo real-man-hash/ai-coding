@@ -26,10 +26,17 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <Script
-          src="https://hm.baidu.com/hm.js?a89966773af811bc99030e29eb670c55"
-          strategy="afterInteractive"
-        />
+        <Script id="baidu-analytics" strategy="afterInteractive">
+          {`
+            var _hmt = _hmt || [];
+            (function() {
+              var hm = document.createElement("script");
+              hm.src = "https://hm.baidu.com/hm.js?a89966773af811bc99030e29eb670c55";
+              var s = document.getElementsByTagName("script")[0];
+              s.parentNode.insertBefore(hm, s);
+            })();
+          `}
+        </Script>
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
