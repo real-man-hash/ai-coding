@@ -5,11 +5,11 @@ import { Brain, BookOpen, Users, ArrowRight } from "lucide-react";
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-green-50">
+    <div className="min-h-screen bg-linear-to-br from-blue-50 to-green-50">
       <div className="container mx-auto px-4 py-16">
         {/* Hero Section */}
         <div className="text-center mb-16">
-          <h1 className="text-5xl font-bold mb-6 bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent">
+          <h1 className="text-5xl font-bold mb-6 bg-linear-to-r from-blue-600 to-green-600 bg-clip-text text-transparent">
             AI 学习伙伴雷达
           </h1>
           <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
@@ -27,6 +27,12 @@ export default function Home() {
               <Button size="lg" variant="outline" className="text-lg px-8">
                 <BookOpen className="h-5 w-5 mr-2" />
                 记忆卡片
+              </Button>
+            </Link>
+            <Link href="/buddies">
+              <Button size="lg" variant="outline" className="text-lg px-8">
+                <Users className="h-5 w-5 mr-2" />
+                学习搭子
               </Button>
             </Link>
           </div>

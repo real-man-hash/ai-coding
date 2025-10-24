@@ -8,7 +8,8 @@ import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
-import { Loader2, Upload, FileText, Brain, Image } from 'lucide-react';
+import { Loader2, Upload, FileText, Brain, Image, Users } from 'lucide-react';
+import Link from 'next/link';
 import { ocrService } from '@/lib/services/ocr';
 import type { AnalyzeResponse, RadarChartData } from '@/types';
 
@@ -274,6 +275,40 @@ export default function AnalyzePage() {
                       </div>
                     </TabsContent>
                   </Tabs>
+                </CardContent>
+              </Card>
+
+              {/* Integration with Study Buddies */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Users className="h-5 w-5" />
+                    Find Study Buddies
+                  </CardTitle>
+                  <CardDescription>
+                    Connect with other learners who have similar knowledge gaps
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    <p className="text-sm text-muted-foreground">
+                      Based on your analysis, you might benefit from studying with others who have similar learning goals.
+                    </p>
+                    <div className="flex gap-2">
+                      <Link href="/buddies">
+                        <Button>
+                          <Users className="h-4 w-4 mr-2" />
+                          Find Study Buddies
+                        </Button>
+                      </Link>
+                      <Link href="/cards">
+                        <Button variant="outline">
+                          <FileText className="h-4 w-4 mr-2" />
+                          Generate Cards
+                        </Button>
+                      </Link>
+                    </div>
+                  </div>
                 </CardContent>
               </Card>
             </>

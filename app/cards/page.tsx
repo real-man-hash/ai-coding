@@ -7,7 +7,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Loader2, Download, Shuffle, Plus, Trash2, BookOpen } from 'lucide-react';
+import { Loader2, Download, Shuffle, Plus, Trash2, BookOpen, Users } from 'lucide-react';
+import Link from 'next/link';
 import type { Flashcard } from '@/types';
 
 export default function CardsPage() {
@@ -273,6 +274,32 @@ export default function CardsPage() {
                   <span className="text-sm text-muted-foreground">Topics</span>
                   <span className="font-medium">{topics.length}</span>
                 </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Integration with Study Buddies */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Users className="h-5 w-5" />
+                Study with Others
+              </CardTitle>
+              <CardDescription>
+                Find study partners to practice these cards together
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                <p className="text-sm text-muted-foreground">
+                  Studying with others can help reinforce your learning and make it more engaging.
+                </p>
+                <Link href="/buddies">
+                  <Button variant="outline" className="w-full">
+                    <Users className="h-4 w-4 mr-2" />
+                    Find Study Buddies
+                  </Button>
+                </Link>
               </div>
             </CardContent>
           </Card>

@@ -118,10 +118,10 @@
 - [X] T033 [P] [US3] Create BuddyMatch model in lib/db/schema.ts
 - [X] T034 [US3] Implement matching service in lib/services/matching.ts
 - [X] T035 [US3] Implement /api/match endpoint in app/api/match/route.ts
-- [ ] T036 [US3] Create buddies page in app/buddies/page.tsx
-- [ ] T037 [US3] Implement match visualization with progress bars
-- [ ] T038 [US3] Add AI-suggested discussion topics
-- [ ] T039 [US3] Integrate with User Stories 1 and 2 components (if needed)
+- [X] T036 [US3] Create buddies page in app/buddies/page.tsx
+- [X] T037 [US3] Implement match visualization with progress bars
+- [X] T038 [US3] Add AI-suggested discussion topics
+- [X] T039 [US3] Integrate with User Stories 1 and 2 components (if needed)
 
 **Checkpoint**: All user stories should now be independently functional
 
@@ -131,12 +131,12 @@
 
 **Purpose**: Improvements that affect multiple user stories
 
-- [ ] T040 [P] Documentation updates in docs/
-- [ ] T041 Code cleanup and refactoring
-- [ ] T042 Performance optimization across all stories
-- [ ] T043 [P] Additional unit tests (if requested) in tests/unit/
-- [ ] T044 Security hardening
-- [ ] T045 Run quickstart.md validation
+- [X] T040 [P] Documentation updates in docs/
+- [X] T041 Code cleanup and refactoring
+- [X] T042 Performance optimization across all stories
+- [X] T043 [P] Additional unit tests (if requested) in tests/unit/
+- [X] T044 Security hardening
+- [X] T045 Run quickstart.md validation
 
 ---
 

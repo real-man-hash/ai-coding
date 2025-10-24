@@ -10,4 +10,4 @@ const connection = mysql.createPool({
   database: process.env.DB_NAME || "ai_study_radar",
 });
 
-export const db = drizzle(connection, { schema });
+export const db = drizzle(connection, { schema, mode: "default" });

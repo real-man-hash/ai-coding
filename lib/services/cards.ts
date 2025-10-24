@@ -40,7 +40,15 @@ export class CardsService {
       }));
 
       // Insert cards into database
-      const insertedCards = await db.insert(flashcards).values(cardsData).returning();
+      await db.insert(flashcards).values(cardsData);
+      
+      // Fetch the inserted cards
+      const insertedCards = await db
+        .select()
+        .from(flashcards)
+        .where(eq(flashcards.userId, userId))
+        .orderBy(flashcards.createdAt);
+        
       logger.databaseOperation('insert', 'flashcards', true, Date.now() - startTime);
 
       logger.info('Card generation completed', { 

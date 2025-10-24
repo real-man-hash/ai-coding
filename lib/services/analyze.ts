@@ -4,6 +4,8 @@ import { eq } from 'drizzle-orm';
 import aiClient from '../ai-client';
 import { logger } from '../logger';
 import { AppError } from '../error-handler';
+import { PerformanceUtils, MemoryMonitor } from '../performance';
+import { APP_CONFIG } from '../constants';
 import type { AnalyzeRequest, AnalyzeResponse, BlindSpot, AIAnalysis } from '../../types';
 
 export class AnalyzeService {
@@ -18,26 +20,31 @@ export class AnalyzeService {
         throw new AppError('Content cannot be empty', 400);
       }
 
-      if (request.content.length > 10000) {
-        throw new AppError('Content too long. Maximum 10,000 characters allowed.', 400);
+      if (request.content.length > APP_CONFIG.MAX_CONTENT_LENGTH) {
+        throw new AppError(`Content too long. Maximum ${APP_CONFIG.MAX_CONTENT_LENGTH} characters allowed.`, 400);
       }
 
       // Create learning session record
-      const [session] = await db.insert(learningSessions).values({
+      const result = await db.insert(learningSessions).values({
         userId,
         content: request.content.trim()
-      }).returning();
+      });
+      
+      const sessionId = result.insertId;
 
       logger.databaseOperation('insert', 'learning_sessions', true, Date.now() - startTime);
 
-      // Call AI service for analysis
-      const aiStartTime = Date.now();
-      const aiAnalysis = await aiClient.analyzeContent({
-        content: request.content,
-        userAssessment: request.userAssessment
-      });
+      // Call AI service for analysis with performance monitoring
+      const aiAnalysis = await PerformanceUtils.measureAsync(
+        () => aiClient.analyzeContent({
+          content: request.content,
+          userAssessment: request.userAssessment
+        }),
+        'AI Analysis'
+      );
       
-      logger.aiCall('analyzeContent', true, Date.now() - aiStartTime);
+      // Record memory usage
+      MemoryMonitor.getInstance().record();
 
       // Process AI response and create blind spots
       const blindSpotsData = aiAnalysis.topics
@@ -56,7 +63,13 @@ export class AnalyzeService {
       // Insert blind spots into database
       let insertedBlindSpots: BlindSpot[] = [];
       if (blindSpotsData.length > 0) {
-        insertedBlindSpots = await db.insert(blindSpots).values(blindSpotsData).returning();
+        await db.insert(blindSpots).values(blindSpotsData);
+        // Fetch the inserted blind spots
+        insertedBlindSpots = await db
+          .select()
+          .from(blindSpots)
+          .where(eq(blindSpots.userId, userId))
+          .orderBy(blindSpots.createdAt);
         logger.databaseOperation('insert', 'blind_spots', true, Date.now() - startTime);
       }
 
