@@ -16,6 +16,7 @@
     "db:init": "node scripts/init-db.js",
     "db:init:prod": "NODE_ENV=production node scripts/init-db.js",
     "debug:auth": "node scripts/debug-auth.js",
+    "debug:signout": "node scripts/debug-signout.js",
     "check:config": "node scripts/check-config.js",
     "postinstall": "npx --yes @next/swc-linux-x64-gnu install || true",
     "prestart": "npm run db:init:prod"

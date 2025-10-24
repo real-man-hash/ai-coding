@@ -16,8 +16,23 @@ export default function Home() {
     setMounted(true);
   }, []);
 
-  const handleSignOut = () => {
-    signOut({ callbackUrl: '/' });
+  const handleSignOut = async () => {
+    console.log("🚪 Starting sign out process...");
+    try {
+      // 使用 signOut 并等待完成
+      await signOut({ 
+        callbackUrl: '/',
+        redirect: false // 不自动重定向，手动处理
+      });
+      
+      console.log("✅ Sign out successful, redirecting...");
+      // 手动重定向到首页
+      window.location.href = '/';
+    } catch (error) {
+      console.error("❌ Sign out error:", error);
+      // 如果退出失败，强制重定向
+      window.location.href = '/';
+    }
   };
 
   // Don't render until mounted to avoid hydration mismatch
