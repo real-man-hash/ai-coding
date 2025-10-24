@@ -16,23 +16,15 @@ export default function Home() {
             通过 AI 驱动的学习分析，自动识别知识盲区、生成记忆卡，并智能匹配最合拍的学习搭子
           </p>
           <div className="flex gap-4 justify-center">
-            <Link href="/analyze">
+            <Link href="/auth/signup">
               <Button size="lg" className="text-lg px-8">
-                <Brain className="h-5 w-5 mr-2" />
-                开始分析
+                免费注册
                 <ArrowRight className="h-5 w-5 ml-2" />
               </Button>
             </Link>
-            <Link href="/cards">
+            <Link href="/auth/signin">
               <Button size="lg" variant="outline" className="text-lg px-8">
-                <BookOpen className="h-5 w-5 mr-2" />
-                记忆卡片
-              </Button>
-            </Link>
-            <Link href="/buddies">
-              <Button size="lg" variant="outline" className="text-lg px-8">
-                <Users className="h-5 w-5 mr-2" />
-                学习搭子
+                立即登录
               </Button>
             </Link>
           </div>

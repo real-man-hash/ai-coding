@@ -3,7 +3,7 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   // Performance optimizations
   experimental: {
-    optimizeCss: true,
+    // optimizeCss: true, // Disabled due to lightningcss compatibility issues
     optimizePackageImports: ['lucide-react', '@radix-ui/react-icons'],
   },
   
