@@ -154,46 +154,52 @@ ${request.userAssessment ? `用户自评：${JSON.stringify(request.userAssessme
   }
 
   private async callLLM(prompt: string): Promise<string> {
-    // Mock implementation for testing
-    console.log('Mock AI call with prompt:', prompt.substring(0, 100) + '...');
-    
-    // Simulate API delay
-    await new Promise(resolve => setTimeout(resolve, 100));
-    
-    // Return mock response based on the prompt content
-    if (prompt.includes('分析以下学习内容')) {
-      return JSON.stringify({
-        "topics": [
-          {"topic": "机器学习算法", "confidence": 0.8, "isBlindSpot": false},
-          {"topic": "数据模式识别", "confidence": 0.3, "isBlindSpot": true},
-          {"topic": "算法优化", "confidence": 0.2, "isBlindSpot": true}
-        ],
-        "analysis": "用户对机器学习算法有较好的理解，但在数据模式识别和算法优化方面存在知识盲区，建议重点学习这些领域。"
+    try {
+      const response = await fetch(`${this.config.endpoint}/chat/completions`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${this.config.apiKey}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          model: 'deepseek-v3-1-terminus',
+          messages: [
+            {
+              role: 'system',
+              content: '你是一个专业的学习分析助手，擅长分析学习内容、生成学习卡片和匹配学习伙伴。请严格按照用户要求的JSON格式返回结果。'
+            },
+            {
+              role: 'user',
+              content: prompt
+            }
+          ],
+          temperature: 0.7,
+          max_tokens: 2000
+        }),
       });
-    } else if (prompt.includes('生成高质量的问答记忆卡')) {
-      return JSON.stringify({
-        "cards": [
-          {"question": "什么是机器学习算法？", "answer": "机器学习算法是让计算机从数据中学习模式并做出预测或决策的数学方法。", "topic": "机器学习基础"},
-          {"question": "数据模式识别的主要方法有哪些？", "answer": "主要包括监督学习、无监督学习和强化学习三种方法。", "topic": "模式识别"}
-        ]
-      });
-    } else if (prompt.includes('学习伙伴匹配度')) {
-      return JSON.stringify({
-        "matches": [
-          {"userId": 1, "name": "张三", "matchScore": 0.85, "reason": "共同学习机器学习，可以互相讨论算法问题", "sharedTopics": ["机器学习", "算法优化"]},
-          {"userId": 2, "name": "李四", "matchScore": 0.78, "reason": "在数据科学领域有丰富经验，可以指导模式识别", "sharedTopics": ["数据科学", "模式识别"]}
-        ]
-      });
+
+      if (!response.ok) {
+        throw new Error(`API error: ${response.status} ${response.statusText}`);
+      }
+
+      const data = await response.json();
+      
+      if (!data.choices || !data.choices[0] || !data.choices[0].message) {
+        throw new Error('Invalid API response format');
+      }
+
+      return data.choices[0].message.content;
+    } catch (error) {
+      console.error('LLM API call failed:', error);
+      throw new Error('Failed to call LLM API');
     }
-    
-    return JSON.stringify({"error": "Unknown prompt type"});
   }
 }
 
 // Create singleton instance
 const aiClient = new AIClient({
-  apiKey: process.env.VE_API_KEY || '',
-  endpoint: process.env.VE_API_ENDPOINT || 'https://ark.cn-beijing.volces.com/api/v1'
+  apiKey: '4ff4fa5c-44bd-4b7d-a0e1-c533b1885f5b',
+  endpoint: 'https://ark.cn-beijing.volces.com/api/v3'
 });
 
 export default aiClient;
