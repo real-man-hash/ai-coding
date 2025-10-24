@@ -27,14 +27,20 @@ export default function SignInPage() {
       const result = await signIn('credentials', {
         email,
         password,
-        redirect: true,
-        callbackUrl: '/dashboard',
+        redirect: false, // 不自动重定向，手动处理
       });
 
-      // If we get here, login was successful and redirect happened
-      // No need to handle success case manually
+      if (result?.error) {
+        console.log("❌ Login error:", result.error);
+        setError('邮箱或密码错误');
+      } else if (result?.ok) {
+        console.log("✅ Login successful, redirecting to dashboard");
+        // 登录成功，使用 window.location 进行完整页面重定向
+        window.location.href = '/dashboard';
+      }
     } catch (error) {
       setError('登录时发生错误');
+    } finally {
       setIsLoading(false);
     }
   };

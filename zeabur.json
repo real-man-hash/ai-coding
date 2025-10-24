@@ -1,0 +1,25 @@
+{
+  "version": 2,
+  "services": [
+    {
+      "name": "realman-app",
+      "source": {
+        "type": "github",
+        "repo": "https://github.com/real-man-hash/ai-coding.git",
+        "branch": "main"
+      },
+      "build": {
+        "type": "nixpacks",
+        "buildCommand": "npm run build",
+        "startCommand": "npm start"
+      },
+      "env": {
+        "NODE_ENV": "production"
+      },
+      "healthCheck": {
+        "path": "/",
+        "port": 3000
+      }
+    }
+  ]
+}

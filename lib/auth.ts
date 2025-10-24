@@ -15,12 +15,12 @@ export const authOptions: NextAuthOptions = {
       },
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) {
-          console.log("Missing credentials");
+          console.log("❌ Missing credentials");
           return null;
         }
 
         try {
-          console.log("Attempting to authenticate user:", credentials.email);
+          console.log("🔍 Attempting to authenticate user:", credentials.email);
           
           // Find user by email
           const user = await db
@@ -30,32 +30,38 @@ export const authOptions: NextAuthOptions = {
             .limit(1);
 
           if (!user.length) {
-            console.log("User not found:", credentials.email);
+            console.log("❌ User not found:", credentials.email);
             return null;
           }
 
           const foundUser = user[0];
-          console.log("Found user:", foundUser.email);
+          console.log("✅ Found user:", foundUser.email, "ID:", foundUser.id);
+
+          // Check if user has a password
+          if (!foundUser.password) {
+            console.log("❌ User has no password set:", credentials.email);
+            return null;
+          }
 
           // Verify password
           const isPasswordValid = await bcrypt.compare(
             credentials.password,
-            foundUser.password || ""
+            foundUser.password
           );
 
           if (!isPasswordValid) {
-            console.log("Invalid password for user:", credentials.email);
+            console.log("❌ Invalid password for user:", credentials.email);
             return null;
           }
 
-          console.log("User authenticated successfully:", foundUser.email);
+          console.log("✅ User authenticated successfully:", foundUser.email);
           return {
             id: foundUser.id.toString(),
             email: foundUser.email,
             name: foundUser.name,
           };
         } catch (error) {
-          console.error("Auth error:", error);
+          console.error("❌ Auth error:", error);
           return null;
         }
       }
@@ -78,18 +84,39 @@ export const authOptions: NextAuthOptions = {
       return session;
     },
     async redirect({ url, baseUrl }) {
-      // Allows relative callback URLs
-      if (url.startsWith("/")) return `${baseUrl}${url}`;
-      // Allows callback URLs on the same origin
-      else if (new URL(url).origin === baseUrl) return url;
-      return `${baseUrl}/dashboard`;
+      console.log("🔄 NextAuth redirect called:", { url, baseUrl });
+      
+      // If url is relative, make it absolute
+      if (url.startsWith("/")) {
+        const redirectUrl = `${baseUrl}${url}`;
+        console.log("✅ Relative URL redirect:", redirectUrl);
+        return redirectUrl;
+      }
+      
+      // If url is on the same origin, allow it
+      try {
+        const urlOrigin = new URL(url).origin;
+        if (urlOrigin === baseUrl) {
+          console.log("✅ Same origin redirect:", url);
+          return url;
+        }
+      } catch (error) {
+        console.log("❌ Invalid URL:", url, error);
+      }
+      
+      // Default redirect to dashboard
+      const defaultRedirect = `${baseUrl}/dashboard`;
+      console.log("✅ Default redirect to dashboard:", defaultRedirect);
+      return defaultRedirect;
     },
   },
   pages: {
     signIn: "/auth/signin",
   },
   secret: process.env.NEXTAUTH_SECRET || "fallback-secret-for-development",
-  debug: true,
-  // Disable CSRF for development
-  useSecureCookies: false,
+  debug: process.env.NODE_ENV === 'development',
+  // Use secure cookies in production
+  useSecureCookies: process.env.NODE_ENV === 'production',
+  // Trust host for production
+  trustHost: process.env.NODE_ENV === 'production',
 };
