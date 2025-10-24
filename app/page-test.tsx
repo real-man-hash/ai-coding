@@ -6,45 +6,15 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Brain, BookOpen, Users, ArrowRight, LogOut, User } from "lucide-react";
-import { useEffect, useState } from 'react';
 
 export default function Home() {
-  const [mounted, setMounted] = useState(false);
   const { data: session, status } = useSession();
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   const handleSignOut = () => {
     signOut({ callbackUrl: '/' });
   };
-
-  // Don't render until mounted to avoid hydration mismatch
-  if (!mounted) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-green-50">
-        <div className="container mx-auto px-4 py-16">
-          <div className="text-center mb-16">
-            <h1 className="text-5xl font-bold mb-6 bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent">
-              AI 学习伙伴雷达
-            </h1>
-            <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-              通过 AI 驱动的学习分析，自动识别知识盲区、生成记忆卡，并智能匹配最合拍的学习搭子
-            </p>
-            <div className="flex gap-4 justify-center">
-              <Button size="lg" disabled>
-                加载中...
-              </Button>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-green-50">
+    <div className="min-h-screen bg-linear-to-br from-blue-50 to-green-50">
       <div className="container mx-auto px-4 py-16">
         {/* Header */}
         {session && (
@@ -52,7 +22,7 @@ export default function Home() {
             <div className="flex items-center space-x-2">
               <User className="h-5 w-5 text-gray-500" />
               <span className="text-sm text-gray-700">欢迎回来，{session.user?.name}！</span>
-              <Badge variant="secondary" children={session.user?.email || ''} />
+              <Badge variant="secondary">{session.user?.email}</Badge>
             </div>
             <div className="flex items-center space-x-4">
               <Link href="/dashboard">
@@ -70,7 +40,7 @@ export default function Home() {
 
         {/* Hero Section */}
         <div className="text-center mb-16">
-          <h1 className="text-5xl font-bold mb-6 bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent">
+          <h1 className="text-5xl font-bold mb-6 bg-linear-to-r from-blue-600 to-green-600 bg-clip-text text-transparent">
             AI 学习伙伴雷达
           </h1>
           <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
