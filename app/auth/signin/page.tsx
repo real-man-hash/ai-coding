@@ -34,7 +34,7 @@ export default function SignInPage() {
       // If we get here, login was successful and redirect happened
       // No need to handle success case manually
     } catch (error) {
-      setError('An error occurred during sign in');
+      setError('登录时发生错误');
       setIsLoading(false);
     }
   };
@@ -44,27 +44,27 @@ export default function SignInPage() {
       <div className="max-w-md w-full space-y-8">
         <div className="text-center">
           <h2 className="mt-6 text-3xl font-extrabold text-gray-900">
-            Sign in to your account
+            登录你的账户
           </h2>
           <p className="mt-2 text-sm text-gray-600">
             Or{' '}
             <Link href="/auth/signup" className="font-medium text-blue-600 hover:text-blue-500">
-              create a new account
+              创建新账户
             </Link>
           </p>
         </div>
 
         <Card>
           <CardHeader>
-            <CardTitle>Welcome back</CardTitle>
+            <CardTitle>欢迎回来</CardTitle>
             <CardDescription>
-              Enter your credentials to access your study dashboard
+              输入你的凭据以访问学习仪表板
             </CardDescription>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <Label htmlFor="email">Email address</Label>
+                <Label htmlFor="email">邮箱地址</Label>
                 <Input
                   id="email"
                   name="email"
@@ -78,7 +78,7 @@ export default function SignInPage() {
               </div>
 
               <div>
-                <Label htmlFor="password">Password</Label>
+                <Label htmlFor="password">密码</Label>
                 <div className="relative mt-1">
                   <Input
                     id="password"
@@ -119,10 +119,10 @@ export default function SignInPage() {
                 {isLoading ? (
                   <>
                     <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                    Signing in...
+                    登录中...
                   </>
                 ) : (
-                  'Sign in'
+                  '登录'
                 )}
               </Button>
             </form>
@@ -132,7 +132,7 @@ export default function SignInPage() {
                 href="/"
                 className="text-sm text-gray-600 hover:text-gray-900"
               >
-                ← Back to home
+                ← 返回首页
               </Link>
             </div>
           </CardContent>

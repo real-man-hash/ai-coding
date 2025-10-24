@@ -23,7 +23,7 @@ export default function AnalyzePage() {
 
   const handleAnalyze = async () => {
     if (!content.trim()) {
-      setError('Please enter some content to analyze');
+      setError('请输入要分析的内容');
       return;
     }
 
@@ -44,13 +44,13 @@ export default function AnalyzePage() {
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.error || 'Analysis failed');
+        throw new Error(errorData.error || '分析失败');
       }
 
       const result = await response.json();
       setAnalysisResult(result);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'An error occurred during analysis');
+      setError(err instanceof Error ? err.message : '分析过程中发生错误');
     } finally {
       setIsAnalyzing(false);
     }
@@ -76,7 +76,7 @@ export default function AnalyzePage() {
         const ocrResult = await ocrService.extractTextFromImage(file);
         setContent(ocrResult.text);
       } catch (err) {
-        setError('Failed to process image. Please try again.');
+        setError('图像处理失败，请重试。');
       } finally {
         setIsProcessingOCR(false);
       }
@@ -102,9 +102,9 @@ export default function AnalyzePage() {
   return (
     <div className="container mx-auto px-4 py-8 max-w-6xl">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold mb-2">AI Knowledge Gap Analysis</h1>
+        <h1 className="text-3xl font-bold mb-2">AI 知识盲区分析</h1>
         <p className="text-muted-foreground">
-          Upload your learning content and discover your knowledge blind spots with AI-powered analysis.
+          上传你的学习内容，通过AI驱动的分析发现你的知识盲区。
         </p>
       </div>
 
@@ -114,16 +114,16 @@ export default function AnalyzePage() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Brain className="h-5 w-5" />
-              Learning Content
+              学习内容
             </CardTitle>
             <CardDescription>
-              Paste your study material or upload a file for analysis
+              粘贴你的学习材料或上传文件进行分析
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div>
               <Label htmlFor="file-upload" className="sr-only">
-                Upload file
+                上传文件
               </Label>
               <input
                 id="file-upload"
@@ -141,25 +141,25 @@ export default function AnalyzePage() {
                 {isProcessingOCR ? (
                   <>
                     <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                    Processing Image...
+                    处理图像中...
                   </>
                 ) : (
                   <>
                     <Image className="h-4 w-4 mr-2" />
-                    Upload File or Image
+                    上传文件或图像
                   </>
                 )}
               </Button>
               <p className="text-xs text-muted-foreground mt-1">
-                Supports text files (.txt, .md, .pdf) and images (.jpg, .png, .gif, .webp)
+                支持文本文件 (.txt, .md, .pdf) 和图像 (.jpg, .png, .gif, .webp)
               </p>
             </div>
 
             <div>
-              <Label htmlFor="content">Content</Label>
+              <Label htmlFor="content">内容</Label>
               <Textarea
                 id="content"
-                placeholder="Paste your learning content here..."
+                placeholder="在此粘贴你的学习内容..."
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
                 className="min-h-[200px] mt-1"
@@ -180,12 +180,12 @@ export default function AnalyzePage() {
               {isAnalyzing ? (
                 <>
                   <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                  Analyzing...
+                  分析中...
                 </>
               ) : (
                 <>
                   <Brain className="h-4 w-4 mr-2" />
-                  Analyze Content
+                  分析内容
                 </>
               )}
             </Button>
@@ -199,9 +199,9 @@ export default function AnalyzePage() {
               {/* Radar Chart */}
               <Card>
                 <CardHeader>
-                  <CardTitle>Knowledge Gap Radar</CardTitle>
+                  <CardTitle>知识盲区雷达图</CardTitle>
                   <CardDescription>
-                    Visual representation of your knowledge areas and blind spots
+                    你的知识领域和盲区的可视化表示
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -216,13 +216,13 @@ export default function AnalyzePage() {
               {/* Analysis Results */}
               <Card>
                 <CardHeader>
-                  <CardTitle>Analysis Results</CardTitle>
+                  <CardTitle>分析结果</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <Tabs defaultValue="blind-spots" className="w-full">
                     <TabsList className="grid w-full grid-cols-2">
-                      <TabsTrigger value="blind-spots">Blind Spots</TabsTrigger>
-                      <TabsTrigger value="analysis">AI Analysis</TabsTrigger>
+                      <TabsTrigger value="blind-spots">盲区</TabsTrigger>
+                      <TabsTrigger value="analysis">AI 分析</TabsTrigger>
                     </TabsList>
                     
                     <TabsContent value="blind-spots" className="space-y-4">
@@ -232,19 +232,19 @@ export default function AnalyzePage() {
                             <div key={index} className="flex items-center justify-between p-3 bg-red-50 rounded-lg">
                               <div>
                                 <Badge variant="destructive" className="mr-2">
-                                  Blind Spot
+                                  盲区
                                 </Badge>
                                 <span className="font-medium">{blindSpot.topic}</span>
                               </div>
                               <div className="text-sm text-muted-foreground">
-                                Confidence: {(blindSpot.confidence * 100).toFixed(0)}%
+                                置信度: {(blindSpot.confidence * 100).toFixed(0)}%
                               </div>
                             </div>
                           ))
                         ) : (
                           <div className="text-center py-8 text-muted-foreground">
                             <FileText className="h-12 w-12 mx-auto mb-4 opacity-50" />
-                            <p>No blind spots detected! Great job!</p>
+                            <p>未检测到盲区！做得很好！</p>
                           </div>
                         )}
                       </div>
@@ -253,7 +253,7 @@ export default function AnalyzePage() {
                     <TabsContent value="analysis" className="space-y-4">
                       <div className="space-y-4">
                         <div>
-                          <h4 className="font-medium mb-2">AI Analysis</h4>
+                          <h4 className="font-medium mb-2">AI 分析</h4>
                           <p className="text-sm text-muted-foreground">
                             {analysisResult.analysis.analysis}
                           </p>
@@ -261,7 +261,7 @@ export default function AnalyzePage() {
                         
                         {analysisResult.analysis.recommendations && analysisResult.analysis.recommendations.length > 0 && (
                           <div>
-                            <h4 className="font-medium mb-2">Recommendations</h4>
+                            <h4 className="font-medium mb-2">建议</h4>
                             <ul className="space-y-1">
                               {analysisResult.analysis.recommendations.map((rec, index) => (
                                 <li key={index} className="text-sm text-muted-foreground flex items-start">
@@ -283,28 +283,28 @@ export default function AnalyzePage() {
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <Users className="h-5 w-5" />
-                    Find Study Buddies
+                    寻找学习伙伴
                   </CardTitle>
                   <CardDescription>
-                    Connect with other learners who have similar knowledge gaps
+                    与有相似知识盲区的其他学习者建立联系
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
                     <p className="text-sm text-muted-foreground">
-                      Based on your analysis, you might benefit from studying with others who have similar learning goals.
+                      基于你的分析，与有相似学习目标的其他人一起学习可能会对你有益。
                     </p>
                     <div className="flex gap-2">
                       <Link href="/buddies">
                         <Button>
                           <Users className="h-4 w-4 mr-2" />
-                          Find Study Buddies
+                          寻找学习伙伴
                         </Button>
                       </Link>
                       <Link href="/cards">
                         <Button variant="outline">
                           <FileText className="h-4 w-4 mr-2" />
-                          Generate Cards
+                          生成卡片
                         </Button>
                       </Link>
                     </div>
@@ -318,9 +318,9 @@ export default function AnalyzePage() {
             <Card>
               <CardContent className="flex flex-col items-center justify-center py-12">
                 <Brain className="h-16 w-16 text-muted-foreground mb-4" />
-                <h3 className="text-lg font-medium mb-2">Ready to Analyze</h3>
+                <h3 className="text-lg font-medium mb-2">准备分析</h3>
                 <p className="text-muted-foreground text-center">
-                  Enter your learning content above and click "Analyze Content" to get started.
+                  在上方输入你的学习内容，然后点击"分析内容"开始。
                 </p>
               </CardContent>
             </Card>

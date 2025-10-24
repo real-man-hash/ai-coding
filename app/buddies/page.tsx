@@ -54,7 +54,7 @@ export default function BuddiesPage() {
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.error || 'Failed to find matches');
+        throw new Error(errorData.error || '查找匹配失败');
       }
 
       const result: MatchingResponse = await response.json();
@@ -62,7 +62,7 @@ export default function BuddiesPage() {
       setSuggestedTopics(result.suggestedTopics);
       setActiveTab('matches');
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'An error occurred while finding matches');
+      setError(err instanceof Error ? err.message : '查找匹配时发生错误');
     } finally {
       setIsFindingMatches(false);
     }
@@ -79,14 +79,14 @@ export default function BuddiesPage() {
       
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.error || 'Failed to load matches');
+        throw new Error(errorData.error || '加载匹配失败');
       }
 
       const result = await response.json();
       setMatches(result.matches);
       setActiveTab('matches');
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'An error occurred while loading matches');
+      setError(err instanceof Error ? err.message : '加载匹配时发生错误');
     } finally {
       setIsLoading(false);
     }
@@ -100,7 +100,7 @@ export default function BuddiesPage() {
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.error || 'Failed to update match status');
+        throw new Error(errorData.error || '更新匹配状态失败');
       }
 
       // Update local state
@@ -108,7 +108,7 @@ export default function BuddiesPage() {
         match.userId === matchId ? { ...match, status } : match
       ));
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to update match status');
+      setError(err instanceof Error ? err.message : '更新匹配状态失败');
     }
   };
 
@@ -119,10 +119,10 @@ export default function BuddiesPage() {
   };
 
   const getCompatibilityLabel = (score: number) => {
-    if (score >= 0.8) return 'Excellent Match';
-    if (score >= 0.6) return 'Good Match';
-    if (score >= 0.4) return 'Fair Match';
-    return 'Poor Match';
+    if (score >= 0.8) return '完美匹配';
+    if (score >= 0.6) return '良好匹配';
+    if (score >= 0.4) return '一般匹配';
+    return '较差匹配';
   };
 
   return (
@@ -130,10 +130,10 @@ export default function BuddiesPage() {
       <div className="mb-8">
         <h1 className="text-3xl font-bold mb-2 flex items-center gap-2">
           <Users className="h-8 w-8" />
-          Study Buddies
+          学习伙伴
         </h1>
         <p className="text-muted-foreground">
-          Find compatible study partners based on your learning patterns and knowledge gaps.
+          基于你的学习模式和知识盲区找到合适的学习伙伴。
         </p>
       </div>
 
@@ -145,9 +145,9 @@ export default function BuddiesPage() {
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
         <TabsList className="grid w-full grid-cols-3">
-          <TabsTrigger value="find-matches">Find Matches</TabsTrigger>
-          <TabsTrigger value="matches">My Matches</TabsTrigger>
-          <TabsTrigger value="profile">My Profile</TabsTrigger>
+          <TabsTrigger value="find-matches">查找匹配</TabsTrigger>
+          <TabsTrigger value="matches">我的匹配</TabsTrigger>
+          <TabsTrigger value="profile">我的资料</TabsTrigger>
         </TabsList>
 
         <TabsContent value="find-matches" className="space-y-6">
@@ -155,20 +155,20 @@ export default function BuddiesPage() {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Target className="h-5 w-5" />
-                Find Study Buddies
+                寻找学习伙伴
               </CardTitle>
               <CardDescription>
-                Discover compatible study partners based on your learning patterns and knowledge gaps.
+                基于你的学习模式和知识盲区发现合适的学习伙伴。
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               {userProfile && (
                 <div className="space-y-4">
                   <div>
-                    <h4 className="font-medium mb-2">Your Learning Profile</h4>
+                    <h4 className="font-medium mb-2">你的学习资料</h4>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
                       <div>
-                        <span className="text-muted-foreground">Subjects:</span>
+                        <span className="text-muted-foreground">科目：</span>
                         <div className="flex flex-wrap gap-1 mt-1">
                           {userProfile.learningPatterns.preferredSubjects.map((subject, index) => (
                             <Badge key={index} variant="secondary">{subject}</Badge>
@@ -176,22 +176,22 @@ export default function BuddiesPage() {
                         </div>
                       </div>
                       <div>
-                        <span className="text-muted-foreground">Study Style:</span>
+                        <span className="text-muted-foreground">学习风格：</span>
                         <span className="ml-2 capitalize">{userProfile.learningPatterns.studyStyle}</span>
                       </div>
                       <div>
-                        <span className="text-muted-foreground">Availability:</span>
+                        <span className="text-muted-foreground">可用时间：</span>
                         <span className="ml-2 capitalize">{userProfile.learningPatterns.availability}</span>
                       </div>
                       <div>
-                        <span className="text-muted-foreground">Experience Level:</span>
+                        <span className="text-muted-foreground">经验水平：</span>
                         <span className="ml-2 capitalize">{userProfile.learningPatterns.experienceLevel}</span>
                       </div>
                     </div>
                   </div>
 
                   <div>
-                    <h4 className="font-medium mb-2">Knowledge Gaps</h4>
+                    <h4 className="font-medium mb-2">知识盲区</h4>
                     <div className="space-y-2">
                       {userProfile.knowledgeGaps.map((gap, index) => (
                         <div key={index} className="flex items-center justify-between p-2 bg-yellow-50 rounded-lg">
@@ -218,12 +218,12 @@ export default function BuddiesPage() {
                   {isFindingMatches ? (
                     <>
                       <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                      Finding Matches...
+                      查找匹配中...
                     </>
                   ) : (
                     <>
                       <Users className="h-4 w-4 mr-2" />
-                      Find New Matches
+                      查找新匹配
                     </>
                   )}
                 </Button>
@@ -238,7 +238,7 @@ export default function BuddiesPage() {
                   ) : (
                     <Clock className="h-4 w-4 mr-2" />
                   )}
-                  Load Existing
+                  加载现有
                 </Button>
               </div>
             </CardContent>
@@ -249,8 +249,8 @@ export default function BuddiesPage() {
           {matches.length > 0 ? (
             <div className="space-y-4">
               <div className="flex items-center justify-between">
-                <h3 className="text-lg font-semibold">Your Study Matches</h3>
-                <Badge variant="outline">{matches.length} matches found</Badge>
+                <h3 className="text-lg font-semibold">你的学习匹配</h3>
+                <Badge variant="outline">找到 {matches.length} 个匹配</Badge>
               </div>
               
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -258,7 +258,7 @@ export default function BuddiesPage() {
                   <Card key={index} className="hover:shadow-lg transition-shadow">
                     <CardHeader className="pb-3">
                       <div className="flex items-center justify-between">
-                        <CardTitle className="text-lg">Study Buddy #{match.userId}</CardTitle>
+                        <CardTitle className="text-lg">学习伙伴 #{match.userId}</CardTitle>
                         <Badge 
                           className={getCompatibilityColor(match.compatibilityScore)}
                           variant="outline"
@@ -267,26 +267,26 @@ export default function BuddiesPage() {
                         </Badge>
                       </div>
                       <CardDescription>
-                        Compatibility: {(match.compatibilityScore * 100).toFixed(0)}%
+                        兼容性: {(match.compatibilityScore * 100).toFixed(0)}%
                       </CardDescription>
                     </CardHeader>
                     <CardContent className="space-y-4">
                       <div className="space-y-2">
                         <div className="flex items-center gap-2 text-sm">
                           <BookOpen className="h-4 w-4 text-muted-foreground" />
-                          <span className="text-muted-foreground">Learning Style:</span>
+                          <span className="text-muted-foreground">学习风格：</span>
                           <span className="capitalize">{match.learningStyle}</span>
                         </div>
                         <div className="flex items-center gap-2 text-sm">
                           <Clock className="h-4 w-4 text-muted-foreground" />
-                          <span className="text-muted-foreground">Availability:</span>
+                          <span className="text-muted-foreground">可用时间：</span>
                           <span className="capitalize">{match.availability}</span>
                         </div>
                       </div>
 
                       {match.commonTopics.length > 0 && (
                         <div>
-                          <h5 className="font-medium text-sm mb-2">Common Topics</h5>
+                          <h5 className="font-medium text-sm mb-2">共同话题</h5>
                           <div className="flex flex-wrap gap-1">
                             {match.commonTopics.map((topic, topicIndex) => (
                               <Badge key={topicIndex} variant="secondary" className="text-xs">
@@ -299,7 +299,7 @@ export default function BuddiesPage() {
 
                       {match.suggestedActivities.length > 0 && (
                         <div>
-                          <h5 className="font-medium text-sm mb-2">Suggested Activities</h5>
+                          <h5 className="font-medium text-sm mb-2">建议活动</h5>
                           <ul className="space-y-1">
                             {match.suggestedActivities.slice(0, 3).map((activity, activityIndex) => (
                               <li key={activityIndex} className="text-sm text-muted-foreground flex items-start">
@@ -318,14 +318,14 @@ export default function BuddiesPage() {
                           onClick={() => handleUpdateMatchStatus(match.userId, 'accepted')}
                         >
                           <Heart className="h-4 w-4 mr-1" />
-                          Connect
+                          连接
                         </Button>
                         <Button 
                           size="sm" 
                           variant="outline"
                           onClick={() => handleUpdateMatchStatus(match.userId, 'rejected')}
                         >
-                          Pass
+                          跳过
                         </Button>
                       </div>
                     </CardContent>
@@ -337,12 +337,12 @@ export default function BuddiesPage() {
             <Card>
               <CardContent className="flex flex-col items-center justify-center py-12">
                 <Users className="h-16 w-16 text-muted-foreground mb-4" />
-                <h3 className="text-lg font-medium mb-2">No Matches Yet</h3>
+                <h3 className="text-lg font-medium mb-2">暂无匹配</h3>
                 <p className="text-muted-foreground text-center mb-4">
-                  Click "Find New Matches" to discover compatible study partners.
+                  点击"查找新匹配"来发现合适的学习伙伴。
                 </p>
                 <Button onClick={() => setActiveTab('find-matches')}>
-                  Find Matches
+                  查找匹配
                 </Button>
               </CardContent>
             </Card>
@@ -353,10 +353,10 @@ export default function BuddiesPage() {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <MessageCircle className="h-5 w-5" />
-                  AI-Suggested Discussion Topics
+                  AI 建议讨论话题
                 </CardTitle>
                 <CardDescription>
-                  Great conversation starters for your study sessions
+                  为你的学习会话提供很好的对话开场白
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -376,20 +376,20 @@ export default function BuddiesPage() {
         <TabsContent value="profile" className="space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle>My Learning Profile</CardTitle>
+              <CardTitle>我的学习资料</CardTitle>
               <CardDescription>
-                Your learning preferences and knowledge gaps used for matching
+                用于匹配的学习偏好和知识盲区
               </CardDescription>
             </CardHeader>
             <CardContent>
               {userProfile ? (
                 <div className="space-y-6">
                   <div>
-                    <h4 className="font-medium mb-3">Learning Patterns</h4>
+                    <h4 className="font-medium mb-3">学习模式</h4>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div className="space-y-2">
                         <div>
-                          <span className="text-sm text-muted-foreground">Preferred Subjects</span>
+                          <span className="text-sm text-muted-foreground">偏好科目</span>
                           <div className="flex flex-wrap gap-1 mt-1">
                             {userProfile.learningPatterns.preferredSubjects.map((subject, index) => (
                               <Badge key={index} variant="secondary">{subject}</Badge>
@@ -397,17 +397,17 @@ export default function BuddiesPage() {
                           </div>
                         </div>
                         <div>
-                          <span className="text-sm text-muted-foreground">Study Style</span>
+                          <span className="text-sm text-muted-foreground">学习风格</span>
                           <p className="capitalize">{userProfile.learningPatterns.studyStyle}</p>
                         </div>
                       </div>
                       <div className="space-y-2">
                         <div>
-                          <span className="text-sm text-muted-foreground">Availability</span>
+                          <span className="text-sm text-muted-foreground">可用时间</span>
                           <p className="capitalize">{userProfile.learningPatterns.availability}</p>
                         </div>
                         <div>
-                          <span className="text-sm text-muted-foreground">Experience Level</span>
+                          <span className="text-sm text-muted-foreground">经验水平</span>
                           <p className="capitalize">{userProfile.learningPatterns.experienceLevel}</p>
                         </div>
                       </div>
@@ -415,14 +415,14 @@ export default function BuddiesPage() {
                   </div>
 
                   <div>
-                    <h4 className="font-medium mb-3">Knowledge Gaps</h4>
+                    <h4 className="font-medium mb-3">知识盲区</h4>
                     <div className="space-y-3">
                       {userProfile.knowledgeGaps.map((gap, index) => (
                         <div key={index} className="flex items-center justify-between p-3 bg-yellow-50 rounded-lg">
                           <div>
                             <span className="font-medium">{gap.topic}</span>
                             <p className="text-sm text-muted-foreground">
-                              Confidence level: {(gap.confidence * 100).toFixed(0)}%
+                              置信度: {(gap.confidence * 100).toFixed(0)}%
                             </p>
                           </div>
                           <div className="w-32">
@@ -436,7 +436,7 @@ export default function BuddiesPage() {
               ) : (
                 <div className="text-center py-8 text-muted-foreground">
                   <Users className="h-12 w-12 mx-auto mb-4 opacity-50" />
-                  <p>Loading profile...</p>
+                  <p>加载资料中...</p>
                 </div>
               )}
             </CardContent>

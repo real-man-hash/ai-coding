@@ -37,7 +37,7 @@ export default function CardsPage() {
       const response = await fetch('/api/generate-cards?userId=1');
       
       if (!response.ok) {
-        throw new Error('Failed to load cards');
+        throw new Error('加载卡片失败');
       }
 
       const data = await response.json();
@@ -47,7 +47,7 @@ export default function CardsPage() {
       const uniqueTopics = [...new Set(data.cards?.map((card: Flashcard) => card.relatedTopic) || [])];
       setTopics(uniqueTopics);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to load cards');
+      setError(err instanceof Error ? err.message : '加载卡片失败');
     } finally {
       setIsLoading(false);
     }
@@ -81,7 +81,7 @@ export default function CardsPage() {
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.error || 'Failed to generate cards');
+        throw new Error(errorData.error || '生成卡片失败');
       }
 
       const result = await response.json();
@@ -91,7 +91,7 @@ export default function CardsPage() {
       const newTopics = [...new Set([...topics, ...result.cards.map((card: Flashcard) => card.relatedTopic)])];
       setTopics(newTopics);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to generate cards');
+      setError(err instanceof Error ? err.message : '生成卡片失败');
     } finally {
       setIsGenerating(false);
     }
@@ -103,7 +103,7 @@ export default function CardsPage() {
       const response = await fetch(`/api/generate-cards/export?userId=1${selectedTopic !== 'all' ? `&topic=${selectedTopic}` : ''}`);
       
       if (!response.ok) {
-        throw new Error('Failed to export cards');
+        throw new Error('导出卡片失败');
       }
 
       const csvContent = await response.text();
@@ -119,7 +119,7 @@ export default function CardsPage() {
       document.body.removeChild(a);
       window.URL.revokeObjectURL(url);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to export cards');
+      setError(err instanceof Error ? err.message : '导出卡片失败');
     } finally {
       setIsExporting(false);
     }
@@ -132,12 +132,12 @@ export default function CardsPage() {
       });
 
       if (!response.ok) {
-        throw new Error('Failed to delete card');
+        throw new Error('删除卡片失败');
       }
 
       setCards(prev => prev.filter(card => card.id !== cardId));
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to delete card');
+      setError(err instanceof Error ? err.message : '删除卡片失败');
     }
   };
 
@@ -171,7 +171,7 @@ export default function CardsPage() {
       <div className="container mx-auto px-4 py-8 max-w-6xl">
         <div className="flex items-center justify-center h-64">
           <Loader2 className="h-8 w-8 animate-spin" />
-          <span className="ml-2">Loading cards...</span>
+          <span className="ml-2">加载卡片中...</span>
         </div>
       </div>
     );
@@ -180,9 +180,9 @@ export default function CardsPage() {
   return (
     <div className="container mx-auto px-4 py-8 max-w-6xl">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold mb-2">Memory Cards</h1>
+        <h1 className="text-3xl font-bold mb-2">记忆卡片</h1>
         <p className="text-muted-foreground">
-          Study with AI-generated memory cards based on your knowledge gaps.
+          使用基于你知识盲区的AI生成记忆卡片进行学习。
         </p>
       </div>
 
@@ -193,18 +193,18 @@ export default function CardsPage() {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <BookOpen className="h-5 w-5" />
-                Study Controls
+                学习控制
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div>
-                <label className="text-sm font-medium mb-2 block">Filter by Topic</label>
+                <label className="text-sm font-medium mb-2 block">按主题筛选</label>
                 <Select value={selectedTopic} onValueChange={setSelectedTopic}>
                   <SelectTrigger>
-                    <SelectValue placeholder="Select topic" />
+                    <SelectValue placeholder="选择主题" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="all">All Topics</SelectItem>
+                    <SelectItem value="all">所有主题</SelectItem>
                     {topics.map(topic => (
                       <SelectItem key={topic} value={topic}>
                         {topic}
@@ -217,18 +217,18 @@ export default function CardsPage() {
               <div className="flex gap-2">
                 <Button onClick={shuffleCards} variant="outline" size="sm">
                   <Shuffle className="h-4 w-4 mr-2" />
-                  Shuffle
+                  打乱
                 </Button>
                 <Button onClick={generateCards} disabled={isGenerating} size="sm">
                   {isGenerating ? (
                     <>
                       <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                      Generating...
+                      生成中...
                     </>
                   ) : (
                     <>
                       <Plus className="h-4 w-4 mr-2" />
-                      Generate Cards
+                      生成卡片
                     </>
                   )}
                 </Button>
@@ -243,12 +243,12 @@ export default function CardsPage() {
                 {isExporting ? (
                   <>
                     <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                    Exporting...
+                    导出中...
                   </>
                 ) : (
                   <>
                     <Download className="h-4 w-4 mr-2" />
-                    Export to Anki
+                    导出到 Anki
                   </>
                 )}
               </Button>
@@ -258,20 +258,20 @@ export default function CardsPage() {
           {/* Stats */}
           <Card>
             <CardHeader>
-              <CardTitle>Statistics</CardTitle>
+              <CardTitle>统计信息</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-2">
                 <div className="flex justify-between">
-                  <span className="text-sm text-muted-foreground">Total Cards</span>
+                  <span className="text-sm text-muted-foreground">总卡片数</span>
                   <span className="font-medium">{cards.length}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-sm text-muted-foreground">Filtered Cards</span>
+                  <span className="text-sm text-muted-foreground">筛选后卡片</span>
                   <span className="font-medium">{filteredCards.length}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-sm text-muted-foreground">Topics</span>
+                  <span className="text-sm text-muted-foreground">主题数</span>
                   <span className="font-medium">{topics.length}</span>
                 </div>
               </div>
@@ -283,21 +283,21 @@ export default function CardsPage() {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Users className="h-5 w-5" />
-                Study with Others
+                与他人学习
               </CardTitle>
               <CardDescription>
-                Find study partners to practice these cards together
+                寻找学习伙伴一起练习这些卡片
               </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
                 <p className="text-sm text-muted-foreground">
-                  Studying with others can help reinforce your learning and make it more engaging.
+                  与他人一起学习可以加强你的学习效果，让学习更有趣。
                 </p>
                 <Link href="/buddies">
                   <Button variant="outline" className="w-full">
                     <Users className="h-4 w-4 mr-2" />
-                    Find Study Buddies
+                    寻找学习伙伴
                   </Button>
                 </Link>
               </div>
@@ -317,23 +317,23 @@ export default function CardsPage() {
             <Card>
               <CardContent className="flex flex-col items-center justify-center py-12">
                 <BookOpen className="h-16 w-16 text-muted-foreground mb-4" />
-                <h3 className="text-lg font-medium mb-2">No Cards Available</h3>
+                <h3 className="text-lg font-medium mb-2">暂无卡片</h3>
                 <p className="text-muted-foreground text-center mb-4">
                   {selectedTopic === 'all' 
-                    ? "Generate some cards to get started with studying."
-                    : `No cards found for topic "${selectedTopic}".`
+                    ? "生成一些卡片开始学习。"
+                    : `主题"${selectedTopic}"下没有找到卡片。`
                   }
                 </p>
                 <Button onClick={generateCards} disabled={isGenerating}>
                   {isGenerating ? (
                     <>
                       <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                      Generating...
+                      生成中...
                     </>
                   ) : (
                     <>
                       <Plus className="h-4 w-4 mr-2" />
-                      Generate Cards
+                      生成卡片
                     </>
                   )}
                 </Button>
@@ -344,7 +344,7 @@ export default function CardsPage() {
               {/* Card Navigation */}
               <div className="flex items-center justify-between">
                 <div className="text-sm text-muted-foreground">
-                  Card {currentCardIndex + 1} of {filteredCards.length}
+                  第 {currentCardIndex + 1} 张，共 {filteredCards.length} 张
                 </div>
                 <div className="flex gap-2">
                   <Button 
@@ -353,7 +353,7 @@ export default function CardsPage() {
                     variant="outline"
                     size="sm"
                   >
-                    Previous
+                    上一张
                   </Button>
                   <Button 
                     onClick={nextCard} 
@@ -361,7 +361,7 @@ export default function CardsPage() {
                     variant="outline"
                     size="sm"
                   >
-                    Next
+                    下一张
                   </Button>
                 </div>
               </div>
@@ -408,7 +408,7 @@ export default function CardsPage() {
                                 exit={{ opacity: 0 }}
                                 transition={{ duration: 0.2 }}
                               >
-                                <h3 className="font-medium mb-2 text-muted-foreground">Answer:</h3>
+                                <h3 className="font-medium mb-2 text-muted-foreground">答案：</h3>
                                 <p>{filteredCards[currentCardIndex]?.answer}</p>
                               </motion.div>
                             ) : (
@@ -419,7 +419,7 @@ export default function CardsPage() {
                                 exit={{ opacity: 0 }}
                                 transition={{ duration: 0.2 }}
                               >
-                                <h3 className="font-medium mb-2 text-muted-foreground">Question:</h3>
+                                <h3 className="font-medium mb-2 text-muted-foreground">问题：</h3>
                                 <p>{filteredCards[currentCardIndex]?.question}</p>
                               </motion.div>
                             )}
@@ -432,7 +432,7 @@ export default function CardsPage() {
                         whileTap={{ scale: 0.98 }}
                       >
                         <Button onClick={flipCard} className="w-full">
-                          {isFlipped ? 'Show Question' : 'Show Answer'}
+                          {isFlipped ? '显示问题' : '显示答案'}
                         </Button>
                       </motion.div>
                     </div>

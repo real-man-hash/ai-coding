@@ -36,13 +36,13 @@ export default function SignUpPage() {
 
     // Validation
     if (formData.password !== formData.confirmPassword) {
-      setError('Passwords do not match');
+      setError('密码不匹配');
       setIsLoading(false);
       return;
     }
 
     if (formData.password.length < 6) {
-      setError('Password must be at least 6 characters long');
+      setError('密码至少需要6个字符');
       setIsLoading(false);
       return;
     }
@@ -62,13 +62,13 @@ export default function SignUpPage() {
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.error || 'Registration failed');
+        throw new Error(errorData.error || '注册失败');
       }
 
       // Redirect to sign in page
       router.push('/auth/signin?message=Account created successfully');
     } catch (error) {
-      setError(error instanceof Error ? error.message : 'An error occurred during registration');
+      setError(error instanceof Error ? error.message : '注册时发生错误');
     } finally {
       setIsLoading(false);
     }
@@ -79,27 +79,27 @@ export default function SignUpPage() {
       <div className="max-w-md w-full space-y-8">
         <div className="text-center">
           <h2 className="mt-6 text-3xl font-extrabold text-gray-900">
-            Create your account
+            创建你的账户
           </h2>
           <p className="mt-2 text-sm text-gray-600">
             Or{' '}
             <Link href="/auth/signin" className="font-medium text-blue-600 hover:text-blue-500">
-              sign in to your existing account
+              登录现有账户
             </Link>
           </p>
         </div>
 
         <Card>
           <CardHeader>
-            <CardTitle>Get started</CardTitle>
+            <CardTitle>开始使用</CardTitle>
             <CardDescription>
-              Create your account to start your learning journey
+              创建你的账户开始学习之旅
             </CardDescription>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <Label htmlFor="name">Full name</Label>
+                <Label htmlFor="name">姓名</Label>
                 <Input
                   id="name"
                   name="name"
@@ -113,7 +113,7 @@ export default function SignUpPage() {
               </div>
 
               <div>
-                <Label htmlFor="email">Email address</Label>
+                <Label htmlFor="email">邮箱地址</Label>
                 <Input
                   id="email"
                   name="email"
@@ -127,7 +127,7 @@ export default function SignUpPage() {
               </div>
 
               <div>
-                <Label htmlFor="password">Password</Label>
+                <Label htmlFor="password">密码</Label>
                 <div className="relative mt-1">
                   <Input
                     id="password"
@@ -155,7 +155,7 @@ export default function SignUpPage() {
               </div>
 
               <div>
-                <Label htmlFor="confirmPassword">Confirm password</Label>
+                <Label htmlFor="confirmPassword">确认密码</Label>
                 <div className="relative mt-1">
                   <Input
                     id="confirmPassword"
@@ -196,10 +196,10 @@ export default function SignUpPage() {
                 {isLoading ? (
                   <>
                     <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                    Creating account...
+                    创建账户中...
                   </>
                 ) : (
-                  'Create account'
+                  '创建账户'
                 )}
               </Button>
             </form>
@@ -209,7 +209,7 @@ export default function SignUpPage() {
                 href="/"
                 className="text-sm text-gray-600 hover:text-gray-900"
               >
-                ← Back to home
+                ← 返回首页
               </Link>
             </div>
           </CardContent>
