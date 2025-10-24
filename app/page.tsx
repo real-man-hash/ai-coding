@@ -1,12 +1,43 @@
+'use client';
+
 import Link from "next/link";
+import { useSession, signOut } from 'next-auth/react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Brain, BookOpen, Users, ArrowRight } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { Brain, BookOpen, Users, ArrowRight, LogOut, User } from "lucide-react";
 
 export default function Home() {
+  const { data: session, status } = useSession();
+
+  const handleSignOut = () => {
+    signOut({ callbackUrl: '/' });
+  };
   return (
     <div className="min-h-screen bg-linear-to-br from-blue-50 to-green-50">
       <div className="container mx-auto px-4 py-16">
+        {/* Header */}
+        {session && (
+          <div className="flex justify-between items-center mb-8">
+            <div className="flex items-center space-x-2">
+              <User className="h-5 w-5 text-gray-500" />
+              <span className="text-sm text-gray-700">欢迎回来，{session.user?.name}！</span>
+              <Badge variant="secondary">{session.user?.email}</Badge>
+            </div>
+            <div className="flex items-center space-x-4">
+              <Link href="/dashboard">
+                <Button variant="outline">
+                  进入仪表板
+                </Button>
+              </Link>
+              <Button variant="outline" onClick={handleSignOut}>
+                <LogOut className="h-4 w-4 mr-2" />
+                退出登录
+              </Button>
+            </div>
+          </div>
+        )}
+
         {/* Hero Section */}
         <div className="text-center mb-16">
           <h1 className="text-5xl font-bold mb-6 bg-linear-to-r from-blue-600 to-green-600 bg-clip-text text-transparent">
@@ -15,19 +46,36 @@ export default function Home() {
           <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
             通过 AI 驱动的学习分析，自动识别知识盲区、生成记忆卡，并智能匹配最合拍的学习搭子
           </p>
-          <div className="flex gap-4 justify-center">
-            <Link href="/auth/signup">
-              <Button size="lg" className="text-lg px-8">
-                免费注册
-                <ArrowRight className="h-5 w-5 ml-2" />
-              </Button>
-            </Link>
-            <Link href="/auth/signin">
-              <Button size="lg" variant="outline" className="text-lg px-8">
-                立即登录
-              </Button>
-            </Link>
-          </div>
+          {!session && (
+            <div className="flex gap-4 justify-center">
+              <Link href="/auth/signup">
+                <Button size="lg" className="text-lg px-8">
+                  免费注册
+                  <ArrowRight className="h-5 w-5 ml-2" />
+                </Button>
+              </Link>
+              <Link href="/auth/signin">
+                <Button size="lg" variant="outline" className="text-lg px-8">
+                  立即登录
+                </Button>
+              </Link>
+            </div>
+          )}
+          {session && (
+            <div className="flex gap-4 justify-center">
+              <Link href="/analyze">
+                <Button size="lg" className="text-lg px-8">
+                  <Brain className="h-5 w-5 mr-2" />
+                  开始分析
+                </Button>
+              </Link>
+              <Link href="/dashboard">
+                <Button size="lg" variant="outline" className="text-lg px-8">
+                  查看仪表板
+                </Button>
+              </Link>
+            </div>
+          )}
         </div>
 
         {/* Features Section */}
@@ -130,16 +178,47 @@ export default function Home() {
 
         {/* CTA Section */}
         <div className="text-center bg-white rounded-2xl p-12 shadow-lg">
-          <h2 className="text-3xl font-bold mb-4">开始你的智能学习之旅</h2>
-          <p className="text-lg text-muted-foreground mb-8">
-            让 AI 成为你的学习伙伴，让学习不再孤独、不再盲目
-          </p>
-          <Link href="/analyze">
-            <Button size="lg" className="text-lg px-8">
-              <Brain className="h-5 w-5 mr-2" />
-              立即开始分析
-            </Button>
-          </Link>
+          {session ? (
+            <>
+              <h2 className="text-3xl font-bold mb-4">继续你的智能学习之旅</h2>
+              <p className="text-lg text-muted-foreground mb-8">
+                欢迎回来，{session.user?.name}！让 AI 继续成为你的学习伙伴
+              </p>
+              <div className="flex gap-4 justify-center">
+                <Link href="/analyze">
+                  <Button size="lg" className="text-lg px-8">
+                    <Brain className="h-5 w-5 mr-2" />
+                    开始分析
+                  </Button>
+                </Link>
+                <Link href="/cards">
+                  <Button size="lg" variant="outline" className="text-lg px-8">
+                    <BookOpen className="h-5 w-5 mr-2" />
+                    学习卡片
+                  </Button>
+                </Link>
+                <Link href="/buddies">
+                  <Button size="lg" variant="outline" className="text-lg px-8">
+                    <Users className="h-5 w-5 mr-2" />
+                    寻找伙伴
+                  </Button>
+                </Link>
+              </div>
+            </>
+          ) : (
+            <>
+              <h2 className="text-3xl font-bold mb-4">开始你的智能学习之旅</h2>
+              <p className="text-lg text-muted-foreground mb-8">
+                让 AI 成为你的学习伙伴，让学习不再孤独、不再盲目
+              </p>
+              <Link href="/analyze">
+                <Button size="lg" className="text-lg px-8">
+                  <Brain className="h-5 w-5 mr-2" />
+                  立即开始分析
+                </Button>
+              </Link>
+            </>
+          )}
         </div>
       </div>
     </div>

@@ -63,7 +63,7 @@ export default function AnalyzePage() {
     // Validate file type
     const validation = ocrService.validateImageFile(file);
     if (!validation.valid) {
-      setError(validation.error || 'Invalid file');
+      setError(validation.error || '无效文件');
       return;
     }
 

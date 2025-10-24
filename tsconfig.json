@@ -3,8 +3,7 @@
     "lib": [
       "dom",
       "dom.iterable",
-      "es6",
-      "node"
+      "es6"
     ],
     "allowJs": true,
     "skipLibCheck": true,
@@ -37,8 +36,7 @@
         "./types/*"
       ]
     },
-    "target": "ES2017",
-    "types": ["node"]
+    "target": "ES2017"
   },
   "include": [
     "next-env.d.ts",
