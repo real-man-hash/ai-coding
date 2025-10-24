@@ -95,10 +95,18 @@ ${request.userAssessment ? `用户自评：${JSON.stringify(request.userAssessme
 
     try {
       const response = await this.callLLM(prompt);
-      return JSON.parse(response);
+      
+      // Extract JSON from markdown code block if present
+      let jsonStr = response;
+      const jsonMatch = response.match(/```json\n([\s\S]*?)\n```/);
+      if (jsonMatch) {
+        jsonStr = jsonMatch[1];
+      }
+      
+      return JSON.parse(jsonStr);
     } catch (error) {
       console.error('Card generation failed:', error);
-      throw new Error('Failed to generate memory cards');
+      throw new Error(`Failed to generate memory cards: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
   }
 
