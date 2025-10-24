@@ -1,6 +1,6 @@
 'use client';
 
-import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer } from 'recharts';
+import { Radar, RadarChart as RechartsRadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer } from 'recharts';
 import type { RadarChartData } from '@/types';
 
 interface RadarChartProps {
@@ -21,7 +21,7 @@ export function RadarChart({ data, width = 400, height = 300 }: RadarChartProps)
   return (
     <div className="w-full">
       <ResponsiveContainer width="100%" height={height}>
-        <RadarChart data={data} margin={{ top: 20, right: 80, bottom: 20, left: 80 }}>
+        <RechartsRadarChart data={data} margin={{ top: 20, right: 80, bottom: 20, left: 80 }}>
           <PolarGrid />
           <PolarAngleAxis dataKey="topic" />
           <PolarRadiusAxis 
@@ -38,7 +38,7 @@ export function RadarChart({ data, width = 400, height = 300 }: RadarChartProps)
             fillOpacity={0.3}
             strokeWidth={2}
           />
-        </RadarChart>
+        </RechartsRadarChart>
       </ResponsiveContainer>
     </div>
   );
