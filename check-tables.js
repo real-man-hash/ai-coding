@@ -1,16 +1,17 @@
 // Check if tables exist
 const mysql = require('mysql2/promise');
+require('dotenv').config();
 
 const checkTables = async () => {
   try {
     console.log('Checking database tables...');
     
     const connection = await mysql.createConnection({
-      host: "10.3.7.16",
-      port: 3306,
-      user: "gdtest",
-      password: "gdmysql_221",
-      database: "gd_bot",
+      host: process.env.DB_HOST || "10.3.7.16",
+      port: parseInt(process.env.DB_PORT || "3306"),
+      user: process.env.DB_USER || "gdtest",
+      password: process.env.DB_PASSWORD || "gdmysql_221",
+      database: process.env.DB_NAME || "gd_bot",
     });
 
     // Check if flashcards table exists

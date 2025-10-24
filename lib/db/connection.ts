@@ -3,11 +3,11 @@ import mysql from "mysql2/promise";
 import * as schema from "./schema";
 
 const connection = mysql.createPool({
-  host: "10.3.7.16", // Use IP address directly
-  port: 3306,
-  user: "gdtest",
-  password: "gdmysql_221",
-  database: "gd_bot",
+  host: process.env.DB_HOST || "10.3.7.16",
+  port: parseInt(process.env.DB_PORT || "3306"),
+  user: process.env.DB_USER || "gdtest",
+  password: process.env.DB_PASSWORD || "gdmysql_221",
+  database: process.env.DB_NAME || "gd_bot",
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0,
