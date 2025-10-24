@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "npx ts-node ./db/migrate.ts && next start",
+    "start": "next start",
     "lint": "eslint",
     "test": "jest",
     "test:watch": "jest --watch",
