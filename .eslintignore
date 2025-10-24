@@ -1,0 +1,33 @@
+# Dependencies
+node_modules/
+
+# Build outputs
+dist/
+build/
+.next/
+out/
+
+# Coverage
+coverage/
+
+# Logs
+*.log
+
+# Environment files
+.env*
+
+# Generated files
+*.tsbuildinfo
+next-env.d.ts
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Minified files
+*.min.js
+*.min.css
