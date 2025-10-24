@@ -9,10 +9,10 @@ const connection = mysql.createPool({
   password: process.env.MYSQL_PASSWORD || "gdmysql_221",
   database: process.env.MYSQL_DATABASE || "gd_bot",
   waitForConnections: true,
-  connectionLimit: 10,
-  queueLimit: 0,
+  // connectionLimit: 10,
+  // queueLimit: 0,
   // Force IPv4
-  family: 4,
+  // family: 4,
 });
 
 // Test connection
