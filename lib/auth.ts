@@ -1,5 +1,4 @@
 import { NextAuthOptions } from "next-auth";
-import { DrizzleAdapter } from "@auth/drizzle-adapter";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { db } from "./db/connection";
 import { users } from "./db/schema";
@@ -7,7 +6,6 @@ import { eq } from "drizzle-orm";
 import bcrypt from "bcryptjs";
 
 export const authOptions: NextAuthOptions = {
-  adapter: DrizzleAdapter(db),
   providers: [
     CredentialsProvider({
       name: "credentials",
@@ -17,10 +15,13 @@ export const authOptions: NextAuthOptions = {
       },
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) {
+          console.log("Missing credentials");
           return null;
         }
 
         try {
+          console.log("Attempting to authenticate user:", credentials.email);
+          
           // Find user by email
           const user = await db
             .select()
@@ -29,10 +30,12 @@ export const authOptions: NextAuthOptions = {
             .limit(1);
 
           if (!user.length) {
+            console.log("User not found:", credentials.email);
             return null;
           }
 
           const foundUser = user[0];
+          console.log("Found user:", foundUser.email);
 
           // Verify password
           const isPasswordValid = await bcrypt.compare(
@@ -41,9 +44,11 @@ export const authOptions: NextAuthOptions = {
           );
 
           if (!isPasswordValid) {
+            console.log("Invalid password for user:", credentials.email);
             return null;
           }
 
+          console.log("User authenticated successfully:", foundUser.email);
           return {
             id: foundUser.id.toString(),
             email: foundUser.email,
@@ -72,10 +77,19 @@ export const authOptions: NextAuthOptions = {
       }
       return session;
     },
+    async redirect({ url, baseUrl }) {
+      // Allows relative callback URLs
+      if (url.startsWith("/")) return `${baseUrl}${url}`;
+      // Allows callback URLs on the same origin
+      else if (new URL(url).origin === baseUrl) return url;
+      return `${baseUrl}/dashboard`;
+    },
   },
   pages: {
     signIn: "/auth/signin",
-    signUp: "/auth/signup",
   },
   secret: process.env.NEXTAUTH_SECRET || "fallback-secret-for-development",
+  debug: true,
+  // Disable CSRF for development
+  useSecureCookies: false,
 };

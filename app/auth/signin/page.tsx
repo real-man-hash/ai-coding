@@ -27,21 +27,14 @@ export default function SignInPage() {
       const result = await signIn('credentials', {
         email,
         password,
-        redirect: false,
+        redirect: true,
+        callbackUrl: '/dashboard',
       });
 
-      if (result?.error) {
-        setError('Invalid email or password');
-      } else {
-        // Check if user has a session
-        const session = await getSession();
-        if (session) {
-          router.push('/dashboard');
-        }
-      }
+      // If we get here, login was successful and redirect happened
+      // No need to handle success case manually
     } catch (error) {
       setError('An error occurred during sign in');
-    } finally {
       setIsLoading(false);
     }
   };
