@@ -1,39 +1,12 @@
 'use client';
 
-import { useSession, signOut } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Loader2, LogOut, User, BookOpen, Users, Brain } from 'lucide-react';
+import { BookOpen, Users, Brain } from 'lucide-react';
 import Link from 'next/link';
 
 export default function DashboardPage() {
-  const { data: session, status } = useSession();
-  const router = useRouter();
-
-  useEffect(() => {
-    if (status === 'unauthenticated') {
-      router.push('/auth/signin');
-    }
-  }, [status, router]);
-
-  if (status === 'loading') {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <Loader2 className="h-8 w-8 animate-spin" />
-      </div>
-    );
-  }
-
-  if (!session) {
-    return null;
-  }
-
-  const handleSignOut = () => {
-    signOut({ callbackUrl: '/' });
-  };
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -46,15 +19,11 @@ export default function DashboardPage() {
               <h1 className="text-2xl font-bold text-gray-900">AI 学习伙伴雷达</h1>
             </div>
             <div className="flex items-center space-x-4">
-              <div className="flex items-center space-x-2">
-                <User className="h-5 w-5 text-gray-500" />
-                <span className="text-sm text-gray-700">{session.user?.name}</span>
-                <Badge variant="secondary">{session.user?.email}</Badge>
-              </div>
-              <Button variant="outline" onClick={handleSignOut}>
-                <LogOut className="h-4 w-4 mr-2" />
-                退出登录
-              </Button>
+              <Link href="/">
+                <Button variant="outline">
+                  返回首页
+                </Button>
+              </Link>
             </div>
           </div>
         </div>
@@ -65,10 +34,10 @@ export default function DashboardPage() {
         <div className="px-4 py-6 sm:px-0">
           <div className="mb-8">
             <h2 className="text-3xl font-bold text-gray-900 mb-2">
-              欢迎回来，{session.user?.name}！
+              欢迎使用 AI 学习伙伴雷达
             </h2>
             <p className="text-gray-600">
-              继续你的学习之旅，享受AI驱动的洞察和学习伙伴。
+              开始你的学习之旅，享受AI驱动的洞察和学习伙伴。
             </p>
           </div>
 

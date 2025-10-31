@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import AuthProvider from "@/components/auth-provider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -26,25 +25,25 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        {/* 百度统计代码 - 直接在 HTML head 中注入 */}
+        {/* 百度统计代码 - 使用 Script 组件避免 hydration 错误 */}
+      </head>
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        {children}
         <script
           dangerouslySetInnerHTML={{
             __html: `
-              var _hmt = _hmt || [];
               (function() {
-                var hm = document.createElement("script");
-                hm.src = "https://hm.baidu.com/hm.js?a89966773af811bc99030e29eb670c55";
-                var s = document.getElementsByTagName("script")[0];
-                s.parentNode.insertBefore(hm, s);
+                if (typeof window !== 'undefined') {
+                  var _hmt = _hmt || [];
+                  var hm = document.createElement("script");
+                  hm.src = "https://hm.baidu.com/hm.js?a89966773af811bc99030e29eb670c55";
+                  var s = document.getElementsByTagName("script")[0];
+                  s.parentNode.insertBefore(hm, s);
+                }
               })();
             `,
           }}
         />
-      </head>
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <AuthProvider>
-          {children}
-        </AuthProvider>
       </body>
     </html>
   );

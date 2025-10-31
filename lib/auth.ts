@@ -89,7 +89,7 @@ export const authOptions: NextAuthOptions = {
     signIn: "/auth/signin",
   },
   secret: process.env.NEXTAUTH_SECRET || "fallback-secret-for-development",
-  debug: true,
+  debug: process.env.NODE_ENV === 'development',
   // Disable CSRF for development
-  useSecureCookies: false,
+  useSecureCookies: process.env.NODE_ENV === 'production',
 };

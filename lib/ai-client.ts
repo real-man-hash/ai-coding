@@ -63,7 +63,7 @@ class AIClient {
 
 ${request.userAssessment ? `用户自评：${JSON.stringify(request.userAssessment)}` : ''}
 
-请返回以下格式的 JSON：
+请返回以下格式的 JSON(只返回json字符串对象,不要包含其他内容)：
 {
   "topics": [
     {"topic": "知识点名称", "confidence": 0.8, "isBlindSpot": true/false}
@@ -73,6 +73,7 @@ ${request.userAssessment ? `用户自评：${JSON.stringify(request.userAssessme
 
     try {
       const response = await this.callLLM(prompt);
+      console.log('AI analysis response:', response);
       return JSON.parse(response);
     } catch (error) {
       console.error('AI analysis failed:', error);
@@ -128,6 +129,7 @@ ${request.userAssessment ? `用户自评：${JSON.stringify(request.userAssessme
 
     try {
       const response = await this.callLLM(prompt);
+      console.log('AI buddy matching response:2', response);
       return JSON.parse(response);
     } catch (error) {
       console.error('Buddy matching failed:', error);
